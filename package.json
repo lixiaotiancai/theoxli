@@ -11,7 +11,9 @@
     "url": "git+https://github.com/lixiaotiancai/theoxli.git"
   },
   "husky": {
-    "pre-commit": "lint-staged"
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "author": "李骁",
   "license": "ISC",
