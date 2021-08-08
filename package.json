@@ -10,6 +10,16 @@
     "type": "git",
     "url": "git+https://github.com/lixiaotiancai/theoxli.git"
   },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "git add"
+    ],
+    "*.{css,scss,less,sss,json,md,html,yml,graphql,gql}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
@@ -26,7 +36,9 @@
     "react-dom": "^17.0.2"
   },
   "devDependencies": {
+    "eslint": "^7.32.0",
     "husky": "^7.0.1",
+    "lint-staged": "^11.1.2",
     "webpack": "^5.49.0",
     "webpack-cli": "^4.7.2"
   }
