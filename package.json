@@ -1,0 +1,19 @@
+{
+  "name": "theoxli",
+  "version": "1.0.0",
+  "description": "想搞点什么事情",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lixiaotiancai/theoxli.git"
+  },
+  "author": "李骁",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lixiaotiancai/theoxli/issues"
+  },
+  "homepage": "https://github.com/lixiaotiancai/theoxli#readme"
+}
