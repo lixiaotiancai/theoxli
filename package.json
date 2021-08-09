@@ -30,7 +30,7 @@
   },
   "husky": {
     "hooks": {
-      "commit-msg": "npx commitlint",
+      "commit-msg": "echo $1",
       "pre-commit": "lint-staged"
     }
   },
