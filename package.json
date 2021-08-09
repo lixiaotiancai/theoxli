@@ -20,14 +20,6 @@
       "git add"
     ]
   },
-  "config": {
-    "commitizen": {
-      "path": "node_modules/cz-customizable"
-    },
-    "cz-customizable": {
-      "config": "node_modules/commitlint-config-imt/cz-config.js"
-    }
-  },
   "husky": {
     "hooks": {
       "commit-msg": "echo $1",
