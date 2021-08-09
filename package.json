@@ -10,16 +10,6 @@
     "type": "git",
     "url": "git+https://github.com/lixiaotiancai/theoxli.git"
   },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "eslint --fix",
-      "git add"
-    ],
-    "*.{css,scss,less,sss,json,md,html,yml,graphql,gql}": [
-      "prettier --write",
-      "git add"
-    ]
-  },
   "husky": {
     "hooks": {
       "commit-msg": "npx --no-install commitlint --edit $1",
