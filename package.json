@@ -22,7 +22,7 @@
   },
   "husky": {
     "hooks": {
-      "commit-msg": "echo asdasda",
+      "commit-msg": "npx --no-install commitlint --edit $1",
       "pre-commit": "lint-staged"
     }
   },
