@@ -22,7 +22,7 @@
   },
   "husky": {
     "hooks": {
-      "commit-msg": "echo $1",
+      "commit-msg": "echo asdasda",
       "pre-commit": "lint-staged"
     }
   },
