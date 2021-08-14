@@ -10,7 +10,7 @@ const pagesDir = path.resolve(__dirname, './src/pages/');
  */
 function getEntry() {
 
-  const htmlPath = path.resolve(pagesDir, './**/*.html');
+  const htmlPath = path.resolve(pagesDir, './{**,**/**}/*.html');
   const htmlPathList = glob.sync(htmlPath);
 
   htmlPathList.forEach(filePath => {
