@@ -1,3 +1,5 @@
+import './index.scss';
+
 (document.querySelector('h1') as any).style = "color: green";
 interface Asd {
   asd: 'asd'
