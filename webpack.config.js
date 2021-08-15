@@ -52,6 +52,19 @@ module.exports = {
     filename: '[name].js',
     chunkFilename: '[name].min.js',
   },
+  module: {
+    rules: [
+      {
+        test: /\.scss$/,
+        exclude: /node_modules/,
+        use: [
+          "style-loader",
+          "css-loader",
+          "sass-loader",
+        ],
+      }
+    ]
+  },
   plugins: [
     ...getHtmlWebpackPluginList(),
     new HotModuleReplacementPlugin(),
