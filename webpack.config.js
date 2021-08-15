@@ -1,7 +1,8 @@
 const path = require('path');
 const glob = require('glob');
+const fs = require('fs');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { webpack, HotModuleReplacementPlugin } = require('webpack');
+const { HotModuleReplacementPlugin } = require('webpack');
 
 const devEntry = {};
 const pagesDir = path.resolve(__dirname, './src/pages/');
@@ -15,8 +16,17 @@ function getEntry() {
   const htmlPathList = glob.sync(htmlPath);
 
   htmlPathList.forEach(filePath => {
-    const htmlName = filePath.match(/\/pages\/(.+)\.html/)[1];
-    devEntry[htmlName] = filePath.replace('html', 'js');
+    const pageName = filePath.match(/\/pages\/(.+)\.html/)[1];
+    const jsEntry = filePath.replace('html', 'js');
+    const tsEntry = filePath.replace('html', 'ts');
+    const jsxEntry = filePath.replace('html', 'jsx');
+    const tsxEntry = filePath.replace('html', 'tsx');
+
+    [jsEntry, tsEntry, jsxEntry, tsxEntry].forEach(entry => {
+      if (fs.existsSync(entry)) {
+        devEntry[pageName] = entry;
+      }
+    })
   })
 
   return devEntry;
@@ -29,7 +39,7 @@ function getHtmlWebpackPluginList() {
   return Object.entries(devEntry).map(([chunk, entryJs]) => {
     return new HtmlWebpackPlugin({
       chunks: [chunk],
-      template: entryJs.replace('js', 'html'),
+      template: entryJs.replace(/(jsx|tsx|js|ts)/g, 'html'),
       filename: `${chunk}.html`
     })
   })
