@@ -4,7 +4,7 @@
   "description": "想搞点什么事情",
   "main": "index.js",
   "scripts": {
-    "dev": "npx webpack serve --config ./webpack-dev.config.js --progress",
+    "dev": "npx webpack serve --config ./webpack.dev.js --progress",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

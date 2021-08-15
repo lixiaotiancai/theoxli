@@ -90,6 +90,19 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.min.js']
   },
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          name: "vendor",
+          test: /[\\/]node_modules[\\/]/,
+          chunks: "initial",
+          priority: 10,
+          minChunks: 2, // 同时引用了2次才打包
+        }
+      }
+    }
+  },
   devtool: 'eval-source-map',
   devServer: {
     port: 8888,
