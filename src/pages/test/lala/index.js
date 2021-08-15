@@ -1,1 +1,1 @@
-document.querySelector('h1').style = "color: orange";
+document.querySelector('h1').style = "color: blue";

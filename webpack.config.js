@@ -1,6 +1,7 @@
 const path = require('path');
 const glob = require('glob');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { webpack, HotModuleReplacementPlugin } = require('webpack');
 
 const devEntry = {};
 const pagesDir = path.resolve(__dirname, './src/pages/');
@@ -47,17 +48,16 @@ module.exports = {
   mode: 'development',
   entry: devEntry,
   output: {
-    publicPath: '/dist/',
     path: path.resolve(__dirname, 'dist'), // 出口目录，dist文件
     filename: '[name].js',
     chunkFilename: '[name].min.js',
   },
   plugins: [
     ...getHtmlWebpackPluginList(),
+    new HotModuleReplacementPlugin(),
   ],
   devtool: 'eval-source-map',
   devServer: {
-    publicPath: '/dist/',
     port: 8888,
     hot: true,
   }
