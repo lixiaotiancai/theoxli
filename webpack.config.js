@@ -17,16 +17,14 @@ function getEntry() {
 
   htmlPathList.forEach(filePath => {
     const pageName = filePath.match(/\/pages\/(.+)\.html/)[1];
-    const jsEntry = filePath.replace('html', 'js');
-    const tsEntry = filePath.replace('html', 'ts');
-    const jsxEntry = filePath.replace('html', 'jsx');
-    const tsxEntry = filePath.replace('html', 'tsx');
 
-    [jsEntry, tsEntry, jsxEntry, tsxEntry].forEach(entry => {
-      if (fs.existsSync(entry)) {
-        devEntry[pageName] = entry;
-      }
-    })
+    ['js, ts', 'jsx', 'tsx']
+      .map(extension => filePath.replace('html', extension))
+      .forEach(entry => {
+        if (fs.existsSync(entry)) {
+          devEntry[pageName] = entry;
+        }
+      })
   })
 
   return devEntry;
