@@ -62,13 +62,21 @@ module.exports = {
           "css-loader",
           "sass-loader",
         ],
-      }
-    ]
+      },
+      {
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
+        use: ['babel-loader'],
+      },
+    ],
   },
   plugins: [
     ...getHtmlWebpackPluginList(),
     new HotModuleReplacementPlugin(),
   ],
+  resolve: {
+    extensions: ['.js', '.jsx', '.ts', '.tsx', '.min.js']
+  },
   devtool: 'eval-source-map',
   devServer: {
     port: 8888,
