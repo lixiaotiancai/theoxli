@@ -18,7 +18,7 @@ function getEntry() {
   htmlPathList.forEach(filePath => {
     const pageName = filePath.match(/\/pages\/(.+)\.html/)[1];
 
-    ['js, ts', 'jsx', 'tsx']
+    ['js', 'ts', 'jsx', 'tsx']
       .map(extension => filePath.replace('html', extension))
       .forEach(entry => {
         if (fs.existsSync(entry)) {
@@ -75,6 +75,11 @@ module.exports = {
         test: /\.jsx?$/,
         exclude: /node_modules/,
         use: ['babel-loader'],
+      },
+      {
+        test: /\.tsx?$/,
+        exclude: /node_modules/,
+        loader: 'ts-loader',
       },
     ],
   },

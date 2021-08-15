@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "noImplicitAny": true,
+    "target": "es5",
+    "jsx": "react",
+    "moduleResolution": "node",
+    "module": "ESNext",
+    "declaration": false,
+    "importHelpers": true,
+    "resolveJsonModule": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}
