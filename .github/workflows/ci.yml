@@ -16,6 +16,7 @@ jobs:
           ls ${{ github.workspace }}
       
   XIXIXI:
+    runs-on: ubuntu-latest
     steps:
       - name: 安装依赖
         run: npm i
