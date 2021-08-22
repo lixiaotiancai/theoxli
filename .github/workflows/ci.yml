@@ -53,8 +53,6 @@ jobs:
           username: root
           port: 22
           password: lxwoshitiancai
-          script: |
-            cd /data/dist
-            http-server
+          script: pm2 restart all
 
       - run: echo "🍏 This job's status is ${{ job.status }}."
