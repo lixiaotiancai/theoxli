@@ -32,6 +32,7 @@ jobs:
           port: 22
           password: lxwoshitiancai
           source: dist/
-          target: /data/
+          target: "/data/"
+          strip_components: 1
 
       - run: echo "🍏 This job's status is ${{ job.status }}."
