@@ -24,7 +24,13 @@ jobs:
     needs: LALALA
     runs-on: ubuntu-latest
     steps:
-      - name: 安装依赖
-        run: npm i
+      - name: 传输文件
+        uses: appleboy/scp-action@v0.1.1
+        with:
+          host: 106.52.60.91
+          username: root
+          password: lxwoshitiancai
+          source: "dist"
+          target: "data"
 
       - run: echo "🍏 This job's status is ${{ job.status }}."
