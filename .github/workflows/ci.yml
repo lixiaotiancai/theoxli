@@ -29,6 +29,7 @@ jobs:
         with:
           host: 106.52.60.91
           username: root
+          port: 22
           password: lxwoshitiancai
           source: "dist"
           target: "data"
