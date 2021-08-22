@@ -31,7 +31,7 @@ jobs:
           username: root
           port: 22
           password: lxwoshitiancai
-          source: "dist/index/index.html"
-          target: "data"
+          source: dist/
+          target: /data/
 
       - run: echo "🍏 This job's status is ${{ job.status }}."
