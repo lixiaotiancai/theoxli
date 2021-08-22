@@ -21,6 +21,7 @@ jobs:
       
   XIXIXI:
     name: 嘻嘻嘻
+    needs: LALALA
     runs-on: ubuntu-latest
     steps:
       - name: 安装依赖
