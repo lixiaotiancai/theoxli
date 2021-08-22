@@ -25,13 +25,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 传输文件
-        uses: appleboy/scp-action@v0.1.1
+        uses: appleboy/scp-action@master
         with:
           host: 106.52.60.91
           username: root
           port: 22
           password: lxwoshitiancai
-          source: "dist"
-          target: "data"
+          source: "./dist"
+          target: "/data"
 
       - run: echo "🍏 This job's status is ${{ job.status }}."
