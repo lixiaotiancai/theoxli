@@ -42,7 +42,19 @@ jobs:
           username: root
           port: 22
           password: lxwoshitiancai
+          rm: true
           source: dist/
           target: /data/
+
+      - name: 执行后置脚本
+        uses: appleboy/ssh-action@master
+        with:
+          host: 106.52.60.91
+          username: root
+          port: 22
+          password: lxwoshitiancai
+          script: |
+            cd /data/dist
+            http-server
 
       - run: echo "🍏 This job's status is ${{ job.status }}."
