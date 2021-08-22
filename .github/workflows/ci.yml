@@ -42,9 +42,9 @@ jobs:
           username: root
           port: 22
           password: lxwoshitiancai
-          rm: true
+          overwrite: true
           source: dist/
-          target: /data/dist
+          target: /data/
 
       - name: 执行后置脚本
         uses: appleboy/ssh-action@master
