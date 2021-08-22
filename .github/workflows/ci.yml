@@ -1,7 +1,13 @@
+.check: &check
+  name: 切换至工作目录
+  uses: actions/checkout@v2
+
 name: 发布流水线
 on: [push]
 jobs:
+
   LALALA:
+    
     runs-on: ubuntu-latest
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
@@ -18,6 +24,7 @@ jobs:
   XIXIXI:
     runs-on: ubuntu-latest
     steps:
+      - *check
       - name: 安装依赖
         run: npm i
 
