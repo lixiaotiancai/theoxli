@@ -1,7 +1,7 @@
 name: 发布流水线
 on: [push]
 jobs:
-  啦啦啦:
+  LALALA:
     runs-on: ubuntu-latest
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
@@ -15,8 +15,7 @@ jobs:
         run: |
           ls ${{ github.workspace }}
       
-  嘻嘻嘻:
-    runs-on: ubuntu-latest
+  XIXIXI:
     steps:
       - name: 安装依赖
         run: npm i
