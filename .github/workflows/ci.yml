@@ -43,8 +43,8 @@ jobs:
           port: 22
           password: lxwoshitiancai
           rm: true
-          source: dist/
-          target: /data/
+          source: dist/*
+          target: /data/dist
 
       - name: 执行后置脚本
         uses: appleboy/ssh-action@master
