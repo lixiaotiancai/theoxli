@@ -8,7 +8,7 @@ import { GlobalModule } from 'global/global.module';
 @Module({
   imports: [
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'pages'),
+      rootPath: join(__dirname, '../..', 'pages'),
     }),
     GlobalModule
   ],
