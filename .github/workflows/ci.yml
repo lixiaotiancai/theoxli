@@ -53,6 +53,8 @@ jobs:
           username: root
           port: 22
           password: lxwoshitiancai
-          script: pm2 restart all
+          script: |
+            pm2 restart all
 
-      - run: echo "🍏 This job's status is ${{ job.status }}."
+      - name: 流水线执行完毕
+        run: echo "🍏流水线执行完毕 ${{ job.status }}."
