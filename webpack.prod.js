@@ -56,7 +56,7 @@ module.exports = {
   mode: 'production',
   entry: devEntry,
   output: {
-    path: path.resolve(__dirname, 'dist'), // 出口目录，dist文件
+    path: path.resolve(__dirname, 'dist/pages'), // 出口目录，dist文件
     filename: '[name].[contenthash:8].js',
     chunkFilename: '[name].[contenthash:8].min.js',
   },
@@ -86,7 +86,7 @@ module.exports = {
   plugins: [
     ...getHtmlWebpackPluginList(),
     new CleanWebpackPlugin({
-      path: path.resolve(__dirname, 'dist')
+      path: path.resolve(__dirname, 'dist/pages')
     })
   ],
   resolve: {
