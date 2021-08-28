@@ -43,7 +43,7 @@ jobs:
           port: 22
           password: lxwoshitiancai
           overwrite: true
-          source: dist/
+          source: "dist/, node_modules"
           target: /data/
 
       - name: 执行后置脚本
