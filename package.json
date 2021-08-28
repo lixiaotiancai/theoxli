@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "dev": "npx webpack serve --config ./webpack.dev.js --progress",
-    "build": "npx webpack --config ./webpack.prod.js --progress",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev-s": "npx nest start --debug --watch",
+    "build-f": "npx webpack --config ./webpack.prod.js --progress",
+    "build-s": "npx nest build",
+    "build": "npm run build-f && npm run build-s"
   },
   "repository": {
     "type": "git",
@@ -34,11 +36,12 @@
   },
   "homepage": "https://github.com/lixiaotiancai/theoxli#readme",
   "dependencies": {
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
     "@nestjs/common": "^8.0.0",
     "@nestjs/core": "^8.0.0",
     "@nestjs/platform-express": "^8.0.0",
+    "@nestjs/serve-static": "^2.2.2",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0"
