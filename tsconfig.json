@@ -1,21 +1,25 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "declaration": true,
-    "removeComments": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "target": "es2017",
     "sourceMap": true,
-    "outDir": "./dist",
-    "baseUrl": "./",
-    "incremental": true,
-    "skipLibCheck": true,
-    "strictNullChecks": false,
-    "noImplicitAny": false,
-    "strictBindCallApply": false,
-    "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
-  }
+    "noImplicitAny": true,
+    "target": "es5",
+    "jsx": "react",
+    "moduleResolution": "node",
+    "module": "ESNext",
+    "declaration": false,
+    "importHelpers": true,
+    "resolveJsonModule": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "lib": [
+      "esnext",
+      "dom",
+      "dom.iterable",
+      "scripthost"
+    ]
+  },
+  "include": ["src/**/*", "server/**/*"],
+  "exclude": ["node_modules"]
 }

@@ -56,7 +56,7 @@ module.exports = {
   mode: 'development',
   entry: devEntry,
   output: {
-    path: path.resolve(__dirname, 'dist'), // 出口目录，dist文件
+    path: path.resolve(__dirname, 'dist/pages'), // 出口目录，dist文件
     filename: '[name].js',
     chunkFilename: '[name].min.js',
   },
