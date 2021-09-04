@@ -5,10 +5,11 @@
   "main": "index.js",
   "scripts": {
     "dev": "npx webpack serve --config ./webpack.dev.js --progress",
-    "dev-s": "NODE_ENV=dev npx nest start --debug --watch",
-    "build-f": "npx webpack --config ./webpack.prod.js --progress",
-    "build-s": "npx nest build",
-    "build": "npm run build-f && npm run build-s"
+    "dev:server": "NODE_ENV=dev npx nest start --debug --watch",
+    "build:client": "npx webpack --config ./webpack.prod.js --progress",
+    "build:server": "npx nest build",
+    "build:mp": "cross-env NODE_ENV=production npx webpack --config ./webpack.mp.js --progress",
+    "build": "npm run build:client && npm run build:mp && npm run build:server"
   },
   "repository": {
     "type": "git",
@@ -67,6 +68,7 @@
     "@typescript-eslint/parser": "^4.28.2",
     "babel-loader": "^8.2.2",
     "clean-webpack-plugin": "^4.0.0-alpha.0",
+    "cross-env": "^7.0.3",
     "css-loader": "^6.2.0",
     "eslint": "^7.30.0",
     "eslint-config-prettier": "^8.3.0",
