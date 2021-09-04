@@ -1,25 +1,160 @@
-import React, { useState } from 'react'
+import React from 'react';
+import marked from 'marked';
+
+const article = `
+<div class="km_view_content km_article_content stackedit-markdown cherry-markdown default watermarked" id="article_content"><div class="watermark" style="background-image: url(&quot;https://km.woa.com/files/personalBg/edfb2eb9fcdfc6e3dde41b7f5d203649.png&quot;);"></div><div class="watermarkHide" style="background-image: url(&quot;https://km.woa.com/files/personalBgHide/edfb2eb9fcdfc6e3dde41b7f5d203649.png&quot;);"></div>
+
+				<div class="content-container" id="mce_view_content">
+					<h2 data-lines="1" data-sign="54b2a2a97f73e1cc2d01a3d2975c515d" id="%E5%89%8D%E8%A8%80" class="toc-enable"><a href="#%E5%89%8D%E8%A8%80" class="anchor"></a>前言</h2><p data-lines="1" data-type="p" data-sign="0249af704fe7181033eec703ac8e52f3">先照惯例简单讲讲背景。</p><p data-lines="2" data-type="p" data-sign="12355cb98449d72e59a02252bfb09f54">随着移动网络的快速发展和移动费用的减少，微视、抖音等短视频平台近年来发展迅速。到2020年6月，国内的短视频用户数量已达8.18亿，比2020年3月增加了4461万，占互联网总用户的87％ <sup>[1]</sup> 。同时，根据《 Internet Trends 2019》<sup>[2]</sup>，短视频平台发展迅速，直到2019年4月，国内的短视频用户每天播放移动短视频的时间接近6亿小时。</p><p data-lines="2" data-type="p" data-sign="c81069af03937714a5636dc0b51a637f">上面这些文字，其实就是想说明一个问题。短视频已经成为了一种常态化的文化形态，且全面下沉。所以假如哪天产品同学突然说我们要做短视频，可千万别惊讶。</p><p data-lines="2" data-type="p" data-sign="eb953b549ba0be28c9973b8677e05fb0" style=""><img alt="" src="http://km.oa.com/files/photos/pictures/202105/1620209177_99_w1010_h1602.png" style="position: relative; z-index: 2;" class="amplify"></p><p data-lines="2" data-type="p" data-sign="697e2e6a0f065a8dc02f67f924265c08">但是业界的短视频大多都选择客户端作为载体，敢用h5做短视频承接方案的勇士还真没几个。网上一搜，清一色全是客户端的解决方案，要不就是只能玩一玩的demo，参考价值比较低，这就给起步带来了不小的难度。再加上铺天盖地的性能问题和兼容性问题，开发之路可谓是举步维艰。当然既然我在这里写这篇文章，肯定上述问题多少都得到了一定程度的解决，话不多说，下面开始分享。</p><h2 data-lines="2" data-sign="d5f0d40017f04d56bb07b16c31e85c24" id="%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0" class="toc-enable"><a href="#%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0" class="anchor"></a>底层实现</h2><p data-lines="1" data-type="p" data-sign="fea42ea28b19c2842899aa5cd7caa820">首先分析一下一个最最最基础的短视频应该具备什么样的特性：</p><p data-lines="3" data-type="p" data-sign="692f5d9234ed5c6f7c55cf5b7ea29e3e">1、能播。<br>2、能滑。</p><p data-lines="2" data-type="p" data-sign="736368ddd87eafb3cde92cd7766f858b">所以大概应该是一个可滑动的短视频列表。</p><p data-lines="2" data-type="p" data-sign="f7735125cfd0eed6afed23f248169c36">这时大多数人脑海中一定想到了这种方案：</p><p data-lines="1" data-type="p" data-sign="eb9a1e718f5af32790952993608bd327" style=""><img alt="" src="http://km.oa.com/files/photos/pictures/202105/1620215697_15_w338_h419.gif" style="position: relative; z-index: 2;"></p><div data-sign="57ad53451969b125cd59447b74956f3f" data-type="codeBlock" data-lines="9"><pre class="prism language-html" style="position: relative; z-index: 2;"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>ul</span><span class="token punctuation">&gt;</span></span>
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>li</span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>video</span> <span class="token punctuation">/&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>li</span><span class="token punctuation">&gt;</span></span>
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>li</span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>video</span> <span class="token punctuation">/&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>li</span><span class="token punctuation">&gt;</span></span>
+	...
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>li</span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>video</span> <span class="token punctuation">/&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>li</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>ul</span><span class="token punctuation">&gt;</span></span>
+</code></pre></div><p data-lines="2" data-type="p" data-sign="17e340432cfeade9d818fc025a5b6278">一个<code>&lt;li&gt;</code>包着<code>&lt;video&gt;</code>的<code>&lt;ul&gt;</code>。然后浏览器就因为多个<code>&lt;video&gt;</code>所导致的性能问题爆掉了，显然这种简单粗暴的方案并不适合，会引发很严重的性能问题。</p><p data-lines="3" data-type="p" data-sign="ddc4eb62fe8ebb1b9f94e1fddf654303" style="">所以我们不妨换种思路，单<code>&lt;video&gt;</code>复用。每次滑动时，<code>&lt;video&gt;</code>动态改变距离文档顶部的绝对高度，保证其出现在视窗中，同时替换其src为当前视频，这样就OK了。思路见下图：<br><img alt="" src="https://p.qpic.cn/qqconadmin/0/53393d70e32145738229d1826da2215d/0" style="position: relative; z-index: 2;"></p><p data-lines="2" data-type="p" data-sign="cf77452322704f5bf153e24d3615ffab">方案设计好后，接下来就该选择实现方案的原材料了。</p><ul class="cherry-list__default" data-lines="2" data-sign="e85a69d954daf17c6fc3172efcb092d0list2"><li>针对“能播”，我们选择了腾讯云提供的播放器SDK <a rel="nofollow" href="https://cloud.tencent.com/document/product/881/20207">TCPlayerLite</a> </li></ul><ul class="cherry-list__default" data-lines="1" data-sign="e85a69d954daf17c6fc3172efcb092d0list1"><li>针对“能滑”，我们选择了当前较火的开源通用滑动解决方案 <a rel="nofollow" href="https://www.swiper.com.cn/">Swiper</a> </li></ul><p data-lines="1" data-type="p" data-sign="c8965a7a83ab30e4a45a4d53a284c1c0">技术选型上，语言选择了当前使用最广泛的React + ts，为了能够“幸福千万家”，我们抽了一个npm包<a rel="nofollow" href="https://mirrors.tencent.com/#/private/npm/detail?repo_id=537&amp;project_name=%40tencent%2Fshort-video-h5">@tencent/short-video-h5</a> ，专门用不参杂任何业务逻辑的纯净的短视频来实现底层。</p><p data-lines="2" data-type="p" data-sign="209e479b9420d64ad8f78597a591dacf">talk is cheap，show me your code。不过由于代码体积过于庞大，把整个代码塞进来会很影响文章观感，这里只放部分代码讲解下思路，想看源码可以直接去<a rel="nofollow" href="https://git.code.oa.com/imweb/short-video-h5">@tencent/short-video-h5 git仓库</a>。</p><p data-lines="2" data-type="p" data-sign="2a784d4a0c4be3c403ba0febbd4bf3e2">入口代码如下所示，主要分为两部分，控制列表滑动的Swiper容器，和负责video播放逻辑的Player。</p><p data-lines="2" data-type="p" data-sign="8007751e58e2d3caa7797fb2c8424632">Swiper容器组件实现思路较为简单，主要是为了把接收到的children包装成一个可滑动的swiper，同时把上下滑动的回调暴露出去，以便外层调用。</p><p data-lines="1" data-type="p" data-sign="b01d533ab97c361692ba84854480cc19">播放器的职责主要有：创建video实例、监听并处理各种播放事件、以及外层列表滑动时，video资源以及位置的切换。</p><div data-sign="f51439df42f4579adbe9110e8eae3828" data-type="codeBlock" data-lines="30"><pre class="prism language-" style="position: relative; z-index: 2;"><code class="language-"><span class="token comment">// index.tsx</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">ShortVideoList</span> <span class="token keyword">extends</span> <span class="token class-name">Component</span> <span class="token punctuation">{</span>
+  <span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> videos <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">getVideoList</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> <span class="token punctuation">(</span>
+      <span class="token operator">&lt;</span><span class="token operator">&gt;</span>
+        <span class="token punctuation">{</span><span class="token comment">/* Swiper容器 */</span><span class="token punctuation">}</span>
+        <span class="token operator">&lt;</span>SwiperComponent
+          onSlideNextTransitionEnd<span class="token operator">=</span><span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span>onSlideNextTransitionEnd<span class="token punctuation">}</span>
+          onSlidePrevTransitionEnd<span class="token operator">=</span><span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span>onSlidePrevTransitionEnd<span class="token punctuation">}</span>
+        <span class="token operator">&gt;</span>
+            <span class="token punctuation">{</span><span class="token comment">/* 视频播放器 */</span><span class="token punctuation">}</span>
+            <span class="token operator">&lt;</span>Player<span class="token operator">/</span><span class="token operator">&gt;</span>
+            <span class="token punctuation">{</span><span class="token comment">/* 与视频信息绑定元素列表，如封面、点赞、收藏、评论等 */</span><span class="token punctuation">}</span>
+            <span class="token punctuation">{</span><span class="token punctuation">(</span>videos <span class="token keyword">as</span> VideoInfo<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">video<span class="token punctuation">,</span> index</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+              <span class="token keyword">return</span> <span class="token punctuation">(</span>
+                <span class="token operator">&lt;</span>div<span class="token operator">&gt;</span>
+                  <span class="token operator">&lt;</span>img src<span class="token operator">=</span><span class="token punctuation">{</span>video<span class="token punctuation">.</span>frame_url <span class="token operator">||</span> video<span class="token punctuation">.</span>picurl<span class="token punctuation">}</span> <span class="token operator">/</span><span class="token operator">&gt;</span>
+                  <span class="token punctuation">{</span>renderItem <span class="token operator">?</span> <span class="token function">renderItem</span><span class="token punctuation">(</span>video<span class="token punctuation">,</span> index<span class="token punctuation">)</span> <span class="token operator">:</span> <span class="token keyword">null</span><span class="token punctuation">}</span>
+                <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">&gt;</span>
+              <span class="token punctuation">)</span>
+            <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">}</span>
+        <span class="token operator">&lt;</span><span class="token operator">/</span>SwiperComponent<span class="token operator">&gt;</span>
+      <span class="token operator">&lt;</span><span class="token operator">/</span><span class="token operator">&gt;</span>
+    <span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p data-lines="1" data-type="p" data-sign="8857ec4bcccda844d17c5063b3b2629a">我们来看下效果吧。npm包开箱即用，十分方便。使用方法如下：</p><div data-sign="3aec2b0372ec46450ca767230f6fd850" data-type="codeBlock" data-lines="18"><pre class="prism language-" style="position: relative; z-index: 2;"><code class="language-"><span class="token keyword">import</span> React <span class="token keyword">from</span> <span class="token string">'react'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> ShortVideoList <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@tencent/short-video-h5'</span>
+<span class="token keyword">import</span> <span class="token string">'@tencent/short-video-h5/dist/index.css'</span>
+
+<span class="token keyword">const</span> videoList <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token operator">...</span><span class="token punctuation">]</span>
+
+<span class="token keyword">const</span> <span class="token function-variable function">App</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token punctuation">(</span>
+    <span class="token operator">&lt;</span>ShortVideoList
+      videoList<span class="token operator">=</span><span class="token punctuation">{</span>videoList<span class="token punctuation">}</span>
+    <span class="token operator">/</span><span class="token operator">&gt;</span>
+  <span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> App
+</code></pre></div><p data-lines="1" data-type="p" data-sign="4a466cf6f3b25b8fdbeefe614bced86b">效果如下：</p><p data-lines="2" data-type="p" data-sign="7ce767dd7b4e2242b5feac9b2f41d14c" style=""><img alt="" src="https://p.qpic.cn/qqconadmin/0/f0dd0f7e1c5844069b2eb2198016a1c4/0" style="position: relative; z-index: 2;"></p><p data-lines="2" data-type="p" data-sign="5b627843622e6cb8dfd8d8e0470ad64d">可以看到短视频播放，暂停，滑动，以及进度条等基础能力都已经OK了。另：npm包中内置了example，可自行体验。</p><h2 data-lines="2" data-sign="caafefed343938b5902aed24359a6496" id="%E4%BC%98%E5%8C%96%E7%AD%96%E7%95%A5" class="toc-enable"><a href="#%E4%BC%98%E5%8C%96%E7%AD%96%E7%95%A5" class="anchor"></a>优化策略</h2><p data-lines="1" data-type="p" data-sign="bc52a9bb96163d5aafe4ff7642ae0bd9">首先回顾一下我们现在采用的策略：</p><p data-lines="2" data-type="p" data-sign="db4536f39fb7a0dda513a761be8b14fc" style=""><img alt="" src="https://p.qpic.cn/qqconadmin/0/53393d70e32145738229d1826da2215d/0" style="position: relative; z-index: 2;"></p><p data-lines="2" data-type="p" data-sign="8667a2d5c38ba0bda1ce31ec0143b0a7">策略是OK的，但是问题也是有的。</p><ul class="cherry-list__default" data-lines="3" data-sign="48e8079c9b6db3db21366748bc16394alist3"><li>由于采用了单video实例，每次滑动都需重新加载视频，导致了每次滑动，用户都要看个几秒钟的loading动画。<br></li><li>上面这种不太友好的体验肯定会被老板吐槽。</li></ul><p data-lines="1" data-type="p" data-sign="3f6cdc1db979ae02614a329d62bfbe41">要想改善这种情况，只有一个办法，就是预加载。这里分享两种视频预加载方案。</p><p data-lines="3" data-type="p" data-sign="f85668fd5a1f8885d1a8a7173958c807"><strong>1. Blob URL预加载方案</strong> <br>如果能事先把视频下载保存至本地，播放时直接播放本地的视频，那么就不会有loading的时间，播放起来也会很顺畅，表现会大大提升，能做到吗？</p><p data-lines="1" data-type="p" data-sign="13433a1dcbac2714ee50494985e3c402">还真行，有一个叫做Blob的东西可以帮助我们实现上面的思路。Blob是一个可以当作文件用的二进制数据，我们可以使用Blob URL API得到一条blob链接，这样我们就能将整个视频缓存在本地。关于Blob这里就不展开介绍，资料如下：</p><ul class="cherry-list__default" data-lines="2" data-sign="a4d6056f1c51d79801594b04a18be573list2"><li>什么是Blob: <a rel="nofollow" href="https://developer.mozilla.org/en-US/docs/Web/API/Blob">https://developer.mozilla.org/en-US/docs/Web/API/Blob</a></li><li>Blob URL API: <a rel="nofollow" href="https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL">https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL</a></li></ul><p data-lines="2" data-type="p" data-sign="dec774ee125ccdbedc323748f609b1aa" style="">实现核心方案为：通过将视频通过blob url api，以二进制的形式缓存在本地，视频加载时直接加载本地视频，以达到视频的极速加载。原理示意图：<br><img alt="" src="https://p.qpic.cn/qqconadmin/0/fb07cce9885e43fd835c6a6c1b95cae7/0?_t=1622877101461" style="position: relative; z-index: 2;"></p><p data-lines="1" data-type="p" data-sign="02df68d6a9968970a4e74f8940cebcc6">代码实现的核心思路是，创建一个存有视频url的列表，并使用blob url api将列表中的视频url逐一转化为blob url。</p><div data-sign="51ce9e8c96cd39bbc233cef7d03f5d2f" data-type="codeBlock" data-lines="32"><pre class="prism language-" style="position: relative; z-index: 2;"><code class="language-"> <span class="token comment">/**
+   * 获取短视频的blob url
+   *
+   * @private
+   * @param {VideoInfo} video
+   * @memberof BlobModel
+   */</span>
+  <span class="token keyword">private</span> <span class="token function-variable function">requestVideoBlob</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">video<span class="token operator">:</span> VideoInfo</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">fetch</span><span class="token punctuation">(</span>video<span class="token punctuation">.</span>url<span class="token punctuation">)</span>
+      <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">response</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> response<span class="token punctuation">.</span><span class="token function">blob</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+      <span class="token punctuation">}</span><span class="token punctuation">)</span>
+      <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">myBlob</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">const</span> objectURL <span class="token operator">=</span> <span class="token constant">URL</span><span class="token punctuation">.</span><span class="token function">createObjectURL</span><span class="token punctuation">(</span>myBlob<span class="token punctuation">)</span>
+
+        <span class="token keyword">return</span> <span class="token punctuation">{</span>
+          objectURL<span class="token punctuation">,</span>
+          fileid<span class="token operator">:</span> video<span class="token punctuation">.</span>fileid<span class="token punctuation">,</span>
+          originURL<span class="token operator">:</span> video<span class="token punctuation">.</span>url
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span><span class="token punctuation">)</span>
+      <span class="token punctuation">.</span><span class="token function">catch</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token punctuation">{</span>
+          objectURL<span class="token operator">:</span> video<span class="token punctuation">.</span>url<span class="token punctuation">,</span>
+          fileid<span class="token operator">:</span> video<span class="token punctuation">.</span>fileid<span class="token punctuation">,</span>
+          originURL<span class="token operator">:</span> video<span class="token punctuation">.</span>url
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+</code></pre></div><p data-lines="4" data-type="p" data-sign="347968c8e251c5f4dfa9e5d7a41baa3d" style="">转化前: <br><img alt="" src="https://km.woa.com/files/photos/pictures/202106/1622877853_71_w1054_h150.png" style="position: relative; z-index: 2;" class="amplify"><br>转化后:<br><img alt="" src="https://km.woa.com/files/photos/pictures/202106/1622877902_91_w1068_h142.png" style="position: relative; z-index: 2;" class="amplify"></p><p data-lines="1" data-type="p" data-sign="681ef382dd19da892496ccb59ff5caa1">npm包提供了<code>useBlob</code>属性一键开启blob预加载方案。</p><div data-sign="f081cbec13f35fd4481f574115f48811" data-type="codeBlock" data-lines="10"><pre class="prism language-" style="position: relative; z-index: 2;"><code class="language-"><span class="token keyword">const</span> <span class="token function-variable function">App</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token punctuation">(</span>
+    <span class="token operator">&lt;</span>ShortVideoList
+      useBlob
+      videoList<span class="token operator">=</span><span class="token punctuation">{</span>videoList<span class="token punctuation">}</span>
+    <span class="token operator">/</span><span class="token operator">&gt;</span>
+  <span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p data-lines="2" data-type="p" data-sign="38975a9a57ffeaef21c79c152a551342">该方案的优势：没有兼容性问题，对设备性能要求较低。<br>该方案的不足：对长视频几乎没有效果（长视频url转blob会很慢）</p><p data-lines="3" data-type="p" data-sign="63a353ba71ee49f9ed6365aad9b6128b"><strong>2. 三video实例预加载方案</strong> <br>我们知道<code>&lt;video&gt;</code>是自带preload属性的，如果准备3个<code>&lt;video&gt;</code>, 分别加载当前、上一个和下一个视频资源，用户滑动时，我们就让加载对应资源的video实例开始播放，不就可以实现滑动后视频的无缝播放了么。</p><p data-lines="4" data-type="p" data-sign="7e285070233aa3dfd3e702d7129d2df7" style="">原理示意图如下：<br><img alt="" src="https://km.woa.com/files/photos/pictures/202106/1622882261_87_w3142_h1778.png" style="position: relative; z-index: 2;" class="amplify"><br>初始创建3个video实例，当用户上滑后，此时current实例暂停播放，next实例开始播放，而pre实例则去提前加载下个视频。</p><p data-lines="1" data-type="p" data-sign="8063d33352cdc3bafc579b6afbdf4101">核心代码如下：</p><div data-sign="3d2fe211fbfab17c204506ab4f6a0097" data-type="codeBlock" data-lines="16"><pre class="prism language-" style="position: relative; z-index: 2;"><code class="language-"><span class="token keyword">private</span> <span class="token function">onNext</span><span class="token punctuation">(</span><span class="token parameter">index<span class="token operator">:</span> number</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> <span class="token punctuation">{</span> videoList <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>props
+  <span class="token keyword">const</span> <span class="token punctuation">[</span>cur<span class="token punctuation">,</span> pre<span class="token punctuation">,</span> next<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token keyword">this</span><span class="token punctuation">.</span>player<span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>prePlayer<span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>nextPlayer<span class="token punctuation">]</span> <span class="token comment">// 对应着三个video实例</span>
+
+  <span class="token keyword">this</span><span class="token punctuation">.</span>prePlayer <span class="token operator">=</span> cur <span class="token comment">// 实例交换</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span>player <span class="token operator">=</span> next
+  <span class="token keyword">this</span><span class="token punctuation">.</span>nextPlayer <span class="token operator">=</span> pre
+
+  <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">resetListener</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">// 重新绑定事件</span>
+
+  <span class="token keyword">this</span><span class="token punctuation">.</span>nextPlayer<span class="token punctuation">.</span><span class="token function">load</span><span class="token punctuation">(</span>videoList<span class="token operator">?.</span><span class="token punctuation">[</span>index <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token operator">?.</span>url<span class="token punctuation">)</span> <span class="token comment">// 提前加载下个视频</span>
+
+  <span class="token keyword">this</span><span class="token punctuation">.</span>player<span class="token punctuation">.</span><span class="token function">play</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">// 播放当前视频</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p data-lines="1" data-type="p" data-sign="abc1a312fce03275429cf187b5d7c9a3">采用这种方案还有一个额外的优势：可以保存最近观看视频的进度。</p><p data-lines="3" data-type="p" data-sign="d2842ba6243367f5a7d5df4117d02136" style=""><img alt="" src="https://km.woa.com/files/photos/pictures/202106/1622882563_72_w1780_h744.png" style="position: relative; z-index: 2;" class="amplify"><br>从图中可以看到，第一次上滑后，current处于暂停状态，保留了播放进度，所以当用户下滑时，current会接着刚刚的进度播放。同理，用户下滑时，next处于暂停状态，所以next的进度也得以保留。</p><p data-lines="1" data-type="p" data-sign="405d15569d06cea740db5b1358fd2da8">npm包提供了<code>useMultiVideoPreload</code>属性一键开启三实例预加载方案。</p><div data-sign="ccb8ebed609242feaf3f36b2f0cb1a4d" data-type="codeBlock" data-lines="10"><pre class="prism language-" style="position: relative; z-index: 2;"><code class="language-"><span class="token keyword">const</span> <span class="token function-variable function">App</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token punctuation">(</span>
+    <span class="token operator">&lt;</span>ShortVideoList
+      useMultiVideoPreload
+      videoList<span class="token operator">=</span><span class="token punctuation">{</span>videoList<span class="token punctuation">}</span>
+    <span class="token operator">/</span><span class="token operator">&gt;</span>
+  <span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p data-lines="2" data-type="p" data-sign="b24fa353efd18b3257ef079dc7616ec1">该方案的优势：适用于任意时长的视频、可以保留最近观看视频的进度<br>该方案的不足：三实例在部分低端机型表现比较吃力</p><h2 data-lines="1" data-sign="e343fcc0f31ef3619488ca4c48728564" id="%E4%B8%9A%E5%8A%A1%E4%BE%A7%E5%AE%9E%E8%B7%B5" class="toc-enable"><a href="#%E4%B8%9A%E5%8A%A1%E4%BE%A7%E5%AE%9E%E8%B7%B5" class="anchor"></a>业务侧实践</h2><p data-lines="1" data-type="p" data-sign="bad15918c91147eddc014d2c5ee2186c">下面分享下<a rel="nofollow" href="https://git.code.oa.com/imweb/short-video-h5">@tencent/short-video-h5</a>在业务侧的应用实践。</p><p data-lines="1" data-type="p" data-sign="a4416b2257aede75c82dd54b53eb1b5b">短视频业务组件设计于公共组件库中。我们有基于submodule的跨项目的公共组件库，详情可见<a rel="nofollow" href="http://hydrae.woa.com/ke-common/storybook/?path=/story/%E8%85%BE%E8%AE%AF%E8%AF%BE%E5%A0%82%E5%85%AC%E5%85%B1%E6%A8%A1%E5%9D%97-0-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D--page">腾讯课堂公共模块</a> 。短视频业务组件内封装了95%的基础业务逻辑，这样做是为了短视频组件的最大程度的可复用性。我们在主站项目与活动项目中各创建了一个短视频页面，分别专注于主站逻辑和活动逻辑。不同的短视频页只需要将业务中特殊的逻辑通过短视频业务组件的props传入即可，大大提升了开发效率。比如一个场景：某活动要在用户看完短视频后完成一个任务，其余逻辑同主站短视频，代码如下：</p><div data-sign="545b43dfc2f674712213341985f26268" data-type="codeBlock" data-lines="28"><pre class="prism language-" style="position: relative; z-index: 2;"><code class="language-"><span class="token keyword">import</span> <span class="token punctuation">{</span> ShortVideoList <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ke-components/short-video-list'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> VideoEvent<span class="token punctuation">,</span> VideoType <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@tencent/short-video-h5'</span><span class="token punctuation">;</span>
+
+<span class="token comment">// 比如一个活动场景，要求用户看完短视频后完成任务</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">OxyearContainer</span><span class="token operator">&lt;</span><span class="token constant">P</span><span class="token punctuation">,</span> <span class="token constant">S</span><span class="token operator">&gt;</span> <span class="token keyword">extends</span> <span class="token class-name">React<span class="token punctuation">.</span>Component</span><span class="token operator">&lt;</span>
+  Exclude<span class="token operator">&lt;</span>OxyearContainerProps <span class="token operator">&amp;</span> <span class="token constant">P</span><span class="token punctuation">,</span> keyof <span class="token constant">P</span><span class="token operator">&gt;</span><span class="token punctuation">,</span>
+  Exclude<span class="token operator">&lt;</span>OxyearContainerState <span class="token operator">&amp;</span> <span class="token constant">S</span><span class="token punctuation">,</span> keyof <span class="token constant">S</span><span class="token operator">&gt;</span>
+<span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+  <span class="token comment">/**
+   * 完成任务
+   */</span>
+  finishBrowserMission <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token parameter">any</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+  <span class="token comment">/**
+   * 播放完成完成任务
+   */</span>
+  <span class="token function">onVideoEvent</span><span class="token punctuation">(</span><span class="token parameter">e<span class="token operator">:</span> VideoEvent</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>e<span class="token punctuation">.</span>type <span class="token operator">===</span> VideoType<span class="token punctuation">.</span>Ended<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">finishBrowserMission</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token operator">&lt;</span>ShortVideoList onVideoEvent<span class="token operator">=</span><span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">onVideoEvent</span><span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">}</span> <span class="token operator">/</span><span class="token operator">&gt;</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p data-lines="2" data-type="p" data-sign="303c28a95c153ba7d9eed936c6c76a9d" style="">架构设计图见下：<br><img alt="" src="https://km.woa.com/files/photos/pictures/202106/1622970972_54_w1181_h881.png" style="position: relative; z-index: 2;" class="amplify"></p><h2 data-lines="2" data-sign="e395612456591afa8b7381569ae03e59" id="%E6%95%85%E4%BA%8B%E7%9C%9F%E7%9A%84%E7%BB%93%E6%9D%9F%E4%BA%86%E5%90%97" class="toc-enable"><a href="#%E6%95%85%E4%BA%8B%E7%9C%9F%E7%9A%84%E7%BB%93%E6%9D%9F%E4%BA%86%E5%90%97" class="anchor"></a>故事真的结束了吗</h2><p data-lines="1" data-type="p" data-sign="5ef19c65ac13dc09c1526fb8004ab665">到了这里，方案已基本成型，故事也确实接近尾声。</p><p data-lines="2" data-type="p" data-sign="a637dc6de9ca940b4c61a12d43f697e9">但是说实话，如果0开始撸这个轮子，真的挺费劲的，H5短视频的水很深，不太好把握。为了能够帮助到有类似场景的开发同学，我们决定将本方案分享出来，开源出来，共同扩充完善。</p><p data-lines="2" data-type="p" data-sign="16997a056bdc1b921a96e7514b8902a9">最后还请大家一键三连，多多点赞收藏和打赏。</p><h2 data-lines="1" data-sign="5b0901206fdd8be7519a31a759f03d5e" id="%E7%89%B9%E5%88%AB%E9%B8%A3%E8%B0%A2" class="toc-enable"><a href="#%E7%89%B9%E5%88%AB%E9%B8%A3%E8%B0%A2" class="anchor"></a>特别鸣谢</h2><p data-lines="8" data-type="p" data-sign="eac42acc189d8a331d1c09f5610542ee">感谢他们对H5短视频的开源贡献！<br><a rel="nofollow" href="https://km.woa.com/user/erasermeng">erasermeng;</a><br><a rel="nofollow" href="https://km.woa.com/user/theoxli">theoxli;</a><br><a rel="nofollow" href="https://km.woa.com/user/hohozhu">hohozhu;</a><br><a rel="nofollow" href="https://km.woa.com/user/nygmazheng">nygmazheng;</a><br><a rel="nofollow" href="https://km.woa.com/user/zhuojunwang">zhuojunwang;</a><br><a rel="nofollow" href="https://km.woa.com/user/teacchen">teacchen;</a><br><a rel="nofollow" href="https://km.woa.com/user/billcui">billcui;</a></p><h2 data-lines="1" data-sign="00f66b6ce49b4c44254c79aaf92f7ffd" id="%E8%B5%84%E6%96%99%E5%90%88%E9%9B%86" class="toc-enable"><a href="#%E8%B5%84%E6%96%99%E5%90%88%E9%9B%86" class="anchor"></a>资料合集</h2><p data-lines="2" data-type="p" data-sign="cc58ef2a6e78c0b85bd3165b98a24316"><a rel="nofollow" href="https://mirrors.tencent.com/#/private/npm/detail?repo_id=537&amp;project_name=%40tencent%2Fshort-video-h5">短视频npm包</a><br><a rel="nofollow" href="https://git.woa.com/imweb/short-video-h5">短视频仓库</a></p><h2 data-lines="1" data-sign="4f31c50f96f09329edfd01c81ef6eb52" id="%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE" class="toc-enable"><a href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE" class="anchor"></a>参考文献</h2><p data-lines="2" data-type="p" data-sign="3bb01075b55a134abbfece86824b4a09"><strong>1.</strong> The 46th china statistical report on internet development, 2020, [online] Available: <a rel="nofollow" href="http://cnnic.cn/gywm/xwzx/rdxw/202009/W020200929343125745019.pdf.">http://cnnic.cn/gywm/xwzx/rdxw/202009/W020200929343125745019.pdf.</a><br><strong>2.</strong> M. Meeker, Internet trends 2019, 2019.</p><span id="mark-markdown-toc-enable" data-toc-enable="true"></span>				</div>
+
+			</div>
+`;
+
+marked.setOptions({
+  pedantic: false,
+  gfm: true,
+  breaks: false,
+  sanitize: false,
+  smartLists: true,
+  smartypants: false,
+  xhtml: false,
+});
 
 function Counter() {
-  const [count, setCount] = useState(0)
-  return (
-    <div>
-      <button onClick={() => setCount(count - 1)}>-</button>
-      <span>{count}</span>
-      <button onClick={() => setCount(count + 1)}>+</button>
-      <div onClick={clickHandle}>跳转</div>
-    </div>
-  )
+  return <div dangerouslySetInnerHTML={{ __html: article }}></div>;
 }
 
-function clickHandle() {
-  if ("undefined" != typeof window.wx && window?.wx.getSystemInfoSync) {
-    window?.wx?.navigateTo({
-      url: '../index/index?id=1'
-    })
-  } else {
-    location.href = 'log.html'
-  }
-}
-
-export default Counter
+export default Counter;

@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Counter from './Counter';
+import './index.scss';
 
 export default function createApp() {
   const container = document.createElement('div');

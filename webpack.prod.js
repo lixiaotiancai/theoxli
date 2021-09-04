@@ -1,6 +1,7 @@
 const path = require('path');
 const glob = require('glob');
 const fs = require('fs');
+const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -12,21 +13,20 @@ const pagesDir = path.resolve(__dirname, './src/pages/');
  * 获取打包入口
  */
 function getEntry() {
-
   const htmlPath = path.resolve(pagesDir, './{**,**/**}/*.html');
   const htmlPathList = glob.sync(htmlPath);
 
-  htmlPathList.forEach(filePath => {
+  htmlPathList.forEach((filePath) => {
     const pageName = filePath.match(/\/pages\/(.+)\.html/)[1];
 
     ['js', 'ts', 'jsx', 'tsx']
-      .map(extension => filePath.replace('html', extension))
-      .forEach(entry => {
+      .map((extension) => filePath.replace('html', extension))
+      .forEach((entry) => {
         if (fs.existsSync(entry)) {
           devEntry[pageName] = entry;
         }
-      })
-  })
+      });
+  });
 
   return devEntry;
 }
@@ -39,9 +39,9 @@ function getHtmlWebpackPluginList() {
     return new HtmlWebpackPlugin({
       chunks: [chunk],
       template: entryJs.replace(/(jsx|tsx|js|ts)/g, 'html'),
-      filename: `${chunk}.html`
-    })
-  })
+      filename: `${chunk}.html`,
+    });
+  });
 }
 
 /**
@@ -66,11 +66,7 @@ module.exports = {
       {
         test: /\.scss$/,
         exclude: /node_modules/,
-        use: [
-          MiniCssExtractPlugin.loader,
-          "css-loader",
-          "sass-loader",
-        ],
+        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
       },
       {
         test: /\.jsx?$/,
@@ -86,32 +82,35 @@ module.exports = {
   },
   plugins: [
     ...getHtmlWebpackPluginList(),
+    new webpack.DefinePlugin({
+      'process.env.isMiniProgram': false, // 注入环境变量，用于业务代码判断
+    }),
     new MiniCssExtractPlugin({
       filename: '[name].[contenthash:8].css',
       chunkFilename: '[name].[contenthash:8].css',
     }),
     new CleanWebpackPlugin({
-      path: path.resolve(__dirname, 'dist/pages')
-    })
+      path: path.resolve(__dirname, 'dist/pages'),
+    }),
   ],
   resolve: {
-    extensions: ['.js', '.jsx', '.ts', '.tsx', '.min.js']
+    extensions: ['.js', '.jsx', '.ts', '.tsx', '.min.js'],
   },
   optimization: {
     splitChunks: {
       cacheGroups: {
         vendor: {
-          name: "vendor",
+          name: 'vendor',
           test: /[\\/]node_modules[\\/]/,
-          chunks: "initial",
+          chunks: 'initial',
           minChunks: 2, // 同时引用了2次才打包
-        }
-      }
-    }
+        },
+      },
+    },
   },
   devtool: 'eval-source-map',
   devServer: {
     port: 8888,
     hot: true,
-  }
-}
+  },
+};

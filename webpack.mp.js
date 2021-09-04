@@ -81,7 +81,11 @@ module.exports = {
         autoBuildNpm: 'npm',
       },
       app: {
-        navigationBarTitleText: 'miniprogram-project',
+        navigationBarTitleText: '小程序同构test',
+        navigationBarBackgroundColor: '#ff00ff',
+        navigationBarTextStyle: 'black',
+        backgroundColor: '#ffff00',
+        backgroundTextStyle: 'light',
       },
       appExtraConfig: {
         sitemapLocation: 'sitemap.json',
