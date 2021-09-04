@@ -1,9 +1,15 @@
 import React from 'react';
-import { render } from 'react-dom';
-import './index.scss';
+import ReactDOM from 'react-dom';
+import Counter from './Counter';
 
-const container = document.createElement('div')
-container.id = 'app'
-document.body.appendChild(container)
+export default function createApp() {
+  const container = document.createElement('div');
+  container.id = 'app';
+  document.body.appendChild(container);
 
-render(<div>啦啦啦我是小程序</div>, container);
+  ReactDOM.render(<Counter />, container);
+}
+
+if (!process.env.isMiniProgram) {
+  createApp();
+}

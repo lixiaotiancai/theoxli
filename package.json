@@ -8,7 +8,7 @@
     "dev:server": "NODE_ENV=dev npx nest start --debug --watch",
     "build:client": "npx webpack --config ./webpack.prod.js --progress",
     "build:server": "npx nest build",
-    "build:mp": "cross-env NODE_ENV=production npx webpack --config ./webpack.mp.js --progress",
+    "build:mp": "cross-env npx webpack --config ./webpack.mp.js --progress",
     "build": "npm run build:client && npm run build:mp && npm run build:server"
   },
   "repository": {

@@ -6,11 +6,10 @@ const MpPlugin = require('mp-webpack-plugin');
 module.exports = {
   mode: 'production',
   entry: {
-    index: path.resolve(__dirname, './src/pages/index/index.js'),
-    test: path.resolve(__dirname, './src/pages/test/index.ts'),
+    index: path.resolve(__dirname, './src/pages/mptest/index.tsx'),
   },
   output: {
-    path: path.resolve(__dirname, './dist/mp'),
+    path: path.resolve(__dirname, './dist/mp/common'),
     filename: '[name].js', // 必需字段，不能修改
     library: 'createApp', // 必需字段，不能修改
     libraryExport: 'default', // 必需字段，不能修改
@@ -64,7 +63,7 @@ module.exports = {
   },
   plugins: [
     new webpack.DefinePlugin({
-      'process.env.isMiniprogram': process.env.isMiniprogram, // 注入环境变量，用于业务代码判断
+      'process.env.isMiniProgram': true, // 注入环境变量，用于业务代码判断
     }),
     new MiniCssExtractPlugin({
       filename: '[name].wxss',
@@ -72,8 +71,7 @@ module.exports = {
     new MpPlugin({
       entry: '/test/aaa',
       router: {
-        index: ['/test/aaa', '/test/bbb'],
-        test: ['/test/aaa', '/test/bbb'],
+        index: ['/test/aaa'],
       },
       redirect: {
         notFound: 'index',
