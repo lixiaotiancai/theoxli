@@ -68,10 +68,7 @@ module.exports = {
       filename: '[name].wxss',
     }),
     new MpPlugin({
-      entry: '/test/aaa',
-      router: {
-        index: ['/test/aaa'],
-      },
+      entry: '/',
       redirect: {
         notFound: 'index',
         accessDenied: 'index',

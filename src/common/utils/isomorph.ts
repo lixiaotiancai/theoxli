@@ -1,5 +1,6 @@
 import { ReactElement } from 'react';
 import ReactDOM from 'react-dom';
+import { isMiniProgram } from './env';
 
 /**
  * 入口dom render
@@ -17,14 +18,14 @@ function createApp(el: ReactElement) {
 }
 
 /**
- * 同构
+ * 入口同构
  *
  * @export
  * @param {ReactElement} el
  * @return {*}
  */
 export function initApp(el: ReactElement) {
-  if (process.env.isMiniProgram) {
+  if (isMiniProgram) {
     return createApp(el);
   }
   return createApp(el)();
