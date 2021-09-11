@@ -4,8 +4,6 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const MpPlugin = require('mp-webpack-plugin');
 const { mpEntry } = require('./webpack.utils');
 
-console.log(mpEntry);
-
 module.exports = {
   mode: 'production',
   entry: mpEntry,
