@@ -3,13 +3,13 @@ const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { devEntry } = require('./webpack.utils');
+const { entry } = require('./webpack.utils');
 
 /**
  * 获取htmlwebpack插件列表
  */
 function getHtmlWebpackPluginList() {
-  return Object.entries(devEntry).map(([chunk, entryJs]) => {
+  return Object.entries(entry).map(([chunk, entryJs]) => {
     return new HtmlWebpackPlugin({
       chunks: [chunk],
       template: entryJs.replace(/(jsx|tsx|js|ts)/g, 'html'),
@@ -20,7 +20,7 @@ function getHtmlWebpackPluginList() {
 
 module.exports = {
   mode: 'production',
-  entry: devEntry,
+  entry: entry,
   output: {
     path: path.resolve(__dirname, 'dist/pages'), // 出口目录，dist文件
     filename: '[name].[contenthash:8].js',

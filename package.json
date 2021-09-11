@@ -8,7 +8,7 @@
     "dev:server": "NODE_ENV=dev npx nest start --debug --watch",
     "build:client": "npx webpack --config ./webpack.prod.js --progress",
     "build:server": "npx nest build",
-    "build:mp": "cross-env npx webpack --config ./webpack.mp.js --progress",
+    "build:mp": "rimraf dist/mp && cross-env npx webpack --config ./webpack.mp.js --progress",
     "build": "npm run build:client && npm run build:mp && npm run build:server"
   },
   "repository": {
@@ -47,7 +47,6 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "reflect-metadata": "^0.1.13",
-    "rimraf": "^3.0.2",
     "rxjs": "^7.2.0"
   },
   "devDependencies": {
@@ -83,6 +82,7 @@
     "mp-webpack-plugin": "^1.5.1",
     "node-sass": "^6.0.1",
     "prettier": "^2.3.2",
+    "rimraf": "^3.0.2",
     "sass-loader": "^12.1.0",
     "style-loader": "^3.2.1",
     "supertest": "^6.1.3",

@@ -9,24 +9,27 @@ const pagesDir = path.resolve(__dirname, './src/pages/');
  *
  * @return {*}
  */
-const devEntry = {};
+const entry = {};
+const mpEntry = {};
 function getEntry() {
   const htmlPath = path.resolve(pagesDir, './{**,**/**}/*.html'); // 支持二级目录
   const htmlPathList = glob.sync(htmlPath);
 
   htmlPathList.forEach((filePath) => {
     const pageName = filePath.match(/\/pages\/(.+)\.html/)[1];
+    const mpPageName = filePath.match(/\/pages\/(.+)\/index.html/)[1].replace(/\//g, '');
 
     ['js', 'ts', 'jsx', 'tsx']
       .map((extension) => filePath.replace('html', extension))
-      .forEach((entry) => {
-        if (fs.existsSync(entry)) {
-          devEntry[pageName] = entry;
+      .forEach((entryJS) => {
+        if (fs.existsSync(entryJS)) {
+          entry[pageName] = entryJS;
+          mpEntry[mpPageName] = entryJS;
         }
       });
   });
 
-  return devEntry;
+  return entry;
 }
 
 (function init() {
@@ -34,5 +37,6 @@ function getEntry() {
 })();
 
 module.exports = {
-  devEntry,
+  entry,
+  mpEntry,
 };
