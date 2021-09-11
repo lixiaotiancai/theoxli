@@ -1,34 +1,9 @@
 const path = require('path');
-const glob = require('glob');
-const fs = require('fs');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { HotModuleReplacementPlugin } = require('webpack');
-
-const devEntry = {};
-const pagesDir = path.resolve(__dirname, './src/pages/');
-
-/**
- * 获取打包入口
- */
-function getEntry() {
-  const htmlPath = path.resolve(pagesDir, './{**,**/**}/*.html');
-  const htmlPathList = glob.sync(htmlPath);
-
-  htmlPathList.forEach((filePath) => {
-    const pageName = filePath.match(/\/pages\/(.+)\.html/)[1];
-
-    ['js', 'ts', 'jsx', 'tsx']
-      .map((extension) => filePath.replace('html', extension))
-      .forEach((entry) => {
-        if (fs.existsSync(entry)) {
-          devEntry[pageName] = entry;
-        }
-      });
-  });
-
-  return devEntry;
-}
+const { devEntry } = require('./webpack.utils');
 
 /**
  * 获取htmlwebpack插件列表
@@ -43,15 +18,6 @@ function getHtmlWebpackPluginList() {
   });
 }
 
-/**
- * 初始化
- */
-function init() {
-  getEntry();
-}
-
-init();
-
 module.exports = {
   mode: 'development',
   entry: devEntry,
@@ -64,8 +30,7 @@ module.exports = {
     rules: [
       {
         test: /\.scss$/,
-        exclude: /node_modules/,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
+        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
       },
       {
         test: /\.jsx?$/,
@@ -80,6 +45,10 @@ module.exports = {
     ],
   },
   plugins: [
+    new MiniCssExtractPlugin({
+      filename: '[name].[contenthash:8].css',
+      chunkFilename: '[name].[contenthash:8].css',
+    }),
     ...getHtmlWebpackPluginList(),
     new webpack.DefinePlugin({
       'process.env.isMiniProgram': false, // 注入环境变量，用于业务代码判断

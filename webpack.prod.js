@@ -1,35 +1,9 @@
 const path = require('path');
-const glob = require('glob');
-const fs = require('fs');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-
-const devEntry = {};
-const pagesDir = path.resolve(__dirname, './src/pages/');
-
-/**
- * 获取打包入口
- */
-function getEntry() {
-  const htmlPath = path.resolve(pagesDir, './{**,**/**}/*.html');
-  const htmlPathList = glob.sync(htmlPath);
-
-  htmlPathList.forEach((filePath) => {
-    const pageName = filePath.match(/\/pages\/(.+)\.html/)[1];
-
-    ['js', 'ts', 'jsx', 'tsx']
-      .map((extension) => filePath.replace('html', extension))
-      .forEach((entry) => {
-        if (fs.existsSync(entry)) {
-          devEntry[pageName] = entry;
-        }
-      });
-  });
-
-  return devEntry;
-}
+const { devEntry } = require('./webpack.utils');
 
 /**
  * 获取htmlwebpack插件列表
@@ -43,15 +17,6 @@ function getHtmlWebpackPluginList() {
     });
   });
 }
-
-/**
- * 初始化
- */
-function init() {
-  getEntry();
-}
-
-init();
 
 module.exports = {
   mode: 'production',

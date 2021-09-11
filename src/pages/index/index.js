@@ -1,1 +1,3 @@
-document.querySelector('h1').style = "color: red";
+import './index.scss';
+
+console.log('啦啦啦');
