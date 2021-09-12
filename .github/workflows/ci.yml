@@ -58,12 +58,13 @@ jobs:
       - name: 🌟执行小程序构建
         run: npm run build:mp
 
-      - name: 🌟echo
-        run: echo "$THEO_MP_SECRET_KEY"
       - name: 🌟获取小程序私钥
         run: echo "$THEO_MP_SECRET_KEY" > private.key
         env:
           THEO_MP_SECRET_KEY: ${{ secrets.THEO_MP_SECRET_KEY }}
+
+      - name: 🌟CAT
+        run: cat ./private.key
 
       - name: 🌟发布小程序体验版本
         run: npx mp-ci upload dist/pages/mp/ --pkp=./private.key
