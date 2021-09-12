@@ -55,6 +55,8 @@ jobs:
       #   run: npm run build:mp
       - name: 🌟获取小程序私钥
         run: echo "$THEO_MP_SECRET_KEY"
+      - name: 🌟获取小程序私钥
+        run: echo "as da da as d"
         # env:
         #   THEO_MP_SECRET_KEY: ${{ secrets.THEO_MP_SECRET_KEY }}
 
