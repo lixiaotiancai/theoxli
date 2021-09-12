@@ -100,8 +100,8 @@ module.exports = {
         attrValueReduce: 5000,
       },
       projectConfig: {
-        projectname: 'kbone-template-react',
-        appid: '',
+        projectname: 'theo的小窝',
+        appid: 'wxbab51fc3f27b67d8',
       },
     }),
   ],
