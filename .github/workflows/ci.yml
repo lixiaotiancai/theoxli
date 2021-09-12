@@ -34,13 +34,13 @@ jobs:
       - name: 🌟构建
         run: npm run build
 
-      - name: 🌟获取小程序私钥
-        run: echo "$THEO_MP_SECRET_KEY" > private.key
-        env:
-          THEO_MP_SECRET_KEY: ${{ secrets.THEO_MP_SECRET_KEY }}
+      # - name: 🌟获取小程序私钥
+      #   run: echo "$THEO_MP_SECRET_KEY" > private.key
+      #   env:
+      #     THEO_MP_SECRET_KEY: ${{ secrets.THEO_MP_SECRET_KEY }}
 
-      - name: 🌟发布小程序体验版本
-        run: npx mp-ci upload dist/pages/mp --pkp=./private.key
+      # - name: 🌟发布小程序体验版本
+      #   run: npx mp-ci upload dist/pages/mp --pkp=./private.key
 
       - name: 🌟传输文件至服务器
         uses: appleboy/scp-action@master
@@ -50,7 +50,7 @@ jobs:
           port: 22
           password: lxwoshitiancai
           overwrite: true
-          source: 'dist/pages, dist/server, node_modules/'
+          source: 'dist/pages/, dist/server/, node_modules/'
           target: /data/
 
       - name: 🌟执行后置脚本
