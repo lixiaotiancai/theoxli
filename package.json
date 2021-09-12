@@ -9,7 +9,8 @@
     "build:client": "npx webpack --config ./webpack.prod.js --progress",
     "build:server": "npx nest build",
     "build:mp": "rimraf dist/mp && cross-env npx webpack --config ./webpack.mp.js --progress",
-    "build": "npm run build:client && npm run build:server"
+    "build": "npm run build:client && npm run build:server",
+    "release:mp": "npx mp-ci upload dist/pages/mp/ --pkp=private.key"
   },
   "repository": {
     "type": "git",

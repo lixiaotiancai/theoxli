@@ -63,8 +63,11 @@ jobs:
         env:
           THEO_MP_SECRET_KEY: ${{ secrets.THEO_MP_SECRET_KEY }}
 
+      - name: car
+        run: cat private.key
+
       - name: 🌟发布小程序体验版本
-        run: npx mp-ci upload dist/pages/mp/ --pkp=./private.key
+        run: npx mp-ci upload dist/pages/mp/ --pkp=private.key
 
       - name: ✅流水线执行完毕
         run: echo "🍏流水线执行完毕 ${{ job.status }}."
