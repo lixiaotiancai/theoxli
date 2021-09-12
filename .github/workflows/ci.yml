@@ -60,8 +60,6 @@ jobs:
 
       - name: 🌟获取小程序私钥
         run: echo ${{ secrets.THEO_MP_SECRET_KEY }}
-        env:
-          THEO_MP_SECRET_KEY: ${{ secrets.THEO_MP_SECRET_KEY }}
 
       - name: 🌟CAT
         run: cat ./private.key
