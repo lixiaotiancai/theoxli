@@ -54,7 +54,11 @@ jobs:
       # - name: 🌟执行小程序构建
       #   run: npm run build:mp
       - name: 🌟获取小程序私钥
-        run: echo "$THEO_MP_SECRET_KEY"
+        run: echo "$THEO_MP_SECRET_KEY" > lalala.txt
+
+      - name: asd
+        run: cat lalala.txt
+
       - name: 🌟获取小程序私钥
         run: echo "as da da as d"
         # env:
