@@ -84,7 +84,7 @@ module.exports = {
         backgroundTextStyle: 'light',
       },
       appExtraConfig: {
-        sitemapLocation: 'sitemap.json',
+        // sitemapLocation: 'sitemap.json',
       },
       global: {},
       pages: {},
