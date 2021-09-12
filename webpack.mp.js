@@ -77,10 +77,10 @@ module.exports = {
         autoBuildNpm: 'npm',
       },
       app: {
-        navigationBarTitleText: '小程序同构test',
-        navigationBarBackgroundColor: '#ff00ff',
+        navigationBarTitleText: 'theo的小窝',
+        navigationBarBackgroundColor: '#FF918D',
         navigationBarTextStyle: 'black',
-        backgroundColor: '#ffff00',
+        backgroundColor: '#ffffff',
         backgroundTextStyle: 'light',
       },
       appExtraConfig: {

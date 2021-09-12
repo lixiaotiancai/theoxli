@@ -1,32 +1,52 @@
 import React from 'react';
-import { isMiniProgram } from '../../common/utils/env';
 import { initApp } from '../../common/utils/isomorph';
 import './index.scss';
 
 function Index() {
-  const onJump1 = () => {
-    if (isMiniProgram) {
-      wx.navigateTo({
-        url: '/pages/mptest/index'
-      })
+  const onClick = () => {
+    const $ = (id) => document.getElementById(id);
+    if ($('fullpage').classList.contains('night')) {
+      $('fullpage').classList.remove('night');
+      $('switch').classList.remove('switched');
+    } else {
+      $('fullpage').classList.add('night');
+      $('switch').classList.add('switched');
     }
-  }
-
-  const onJump2 = () => {
-    if (isMiniProgram) {
-      wx.navigateTo({
-        url: '/pages/testlala/index'
-      })
-    }
-  }
+  };
 
   return (
     <>
-      <h1>我是首页</h1>
-      <p onClick={onJump1}>路由1</p>
-      <p onClick={onJump2}>路由2</p>
+      <div id="fullpage">
+        <div className="section">
+          <div className="time-circle">
+            <div className="sun"></div>
+            <div className="moon">
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+            <div className="stars">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+            <div className="water"></div>
+          </div>
+          <div id="intro-text">
+            <h1 href="#">theo的小窝</h1>
+            <h4>coming soon...</h4>
+          </div>
+          <div id="switch" className="switch" onClick={onClick}>
+            <div id="circle" className="circle"></div>
+          </div>
+        </div>
+      </div>
     </>
-  )
+  );
 }
 
 export default initApp(<Index />);
