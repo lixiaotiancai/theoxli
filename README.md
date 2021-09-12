@@ -15,5 +15,4 @@
 "build:server": 打包服务端
 "build:mp": 打包小程序
 "build": 打包前端和服务端和小程序
-
 ```
