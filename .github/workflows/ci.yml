@@ -59,7 +59,7 @@ jobs:
       #   run: npm run build:mp
 
       - name: 🌟获取小程序私钥
-        run: echo ${{ secrets.THEO_MP_SECRET_KEY }}
+        run: echo "${{ secrets.THEO_MP_SECRET_KEY }}"
 
       - name: 🌟CAT
         run: cat ./private.key
