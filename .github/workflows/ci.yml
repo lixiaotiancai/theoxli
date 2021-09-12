@@ -23,13 +23,13 @@ jobs:
     name: 流水线
     runs-on: ubuntu-latest
     steps:
-      # - name: 🌟切换至工作目录
-      #   uses: actions/checkout@v2
-      #   with:
-      #     branch: master
+      - name: 🌟切换至工作目录
+        uses: actions/checkout@v2
+        with:
+          branch: master
 
-      # - name: 🌟安装依赖
-      #   run: npm i
+      - name: 🌟安装依赖
+        run: npm i
 
       # - name: 🌟执行web构建
       #   run: npm run build
@@ -55,18 +55,16 @@ jobs:
       #     script: |
       #       pm2 restart all
 
-      # - name: 🌟执行小程序构建
-      #   run: npm run build:mp
-      - name: asd
-        run: echo "${{ secrets.THEO_MP_SECRET_KEY }}"
+      - name: 🌟执行小程序构建
+        run: npm run build:mp
 
-      # - name: 🌟获取小程序私钥
-      #   run: echo "$THEO_MP_SECRET_KEY" > private.key
-      #   env:
-      #     THEO_MP_SECRET_KEY: ${{ secrets.THEO_MP_SECRET_KEY }}
+      - name: 🌟获取小程序私钥
+        run: echo "$THEO_MP_SECRET_KEY" > private.key
+        env:
+          THEO_MP_SECRET_KEY: ${{ secrets.THEO_MP_SECRET_KEY }}
 
-      # - name: 🌟发布小程序体验版本
-      #   run: npx mp-ci upload dist/pages/mp/ --pkp=./private.key
+      - name: 🌟发布小程序体验版本
+        run: npx mp-ci upload dist/pages/mp/ --pkp=./private.key
 
-      # - name: ✅流水线执行完毕
-      #   run: echo "🍏流水线执行完毕 ${{ job.status }}."
+      - name: ✅流水线执行完毕
+        run: echo "🍏流水线执行完毕 ${{ job.status }}."
