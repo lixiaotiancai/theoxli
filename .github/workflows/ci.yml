@@ -28,12 +28,10 @@ jobs:
         with:
           branch: master
 
-      - name: 🌟安装依赖
-        run: npm i
-
+      # - name: 🌟安装依赖
+      #   run: npm i
       # - name: 🌟执行web构建
       #   run: npm run build
-
       # - name: 🌟传输文件至服务器
       #   uses: appleboy/scp-action@master
       #   with:
@@ -44,7 +42,6 @@ jobs:
       #     overwrite: true
       #     source: 'dist/, node_modules/'
       #     target: /data/
-
       # - name: 🌟执行后置脚本
       #   uses: appleboy/ssh-action@master
       #   with:
@@ -54,17 +51,15 @@ jobs:
       #     password: lxwoshitiancai
       #     script: |
       #       pm2 restart all
-
-      - name: 🌟执行小程序构建
-        run: npm run build:mp
-
+      # - name: 🌟执行小程序构建
+      #   run: npm run build:mp
       - name: 🌟获取小程序私钥
-        run: echo "$THEO_MP_SECRET_KEY" > private.key
-        env:
-          THEO_MP_SECRET_KEY: ${{ secrets.THEO_MP_SECRET_KEY }}
+        run: echo "$THEO_MP_SECRET_KEY"
+        # env:
+        #   THEO_MP_SECRET_KEY: ${{ secrets.THEO_MP_SECRET_KEY }}
 
-      - name: 🌟发布小程序体验版本
-        run: npx mp-ci upload dist/pages/mp/ --pkp=./private.key
+      # - name: 🌟发布小程序体验版本
+      #   run: npx mp-ci upload dist/pages/mp/ --pkp=./private.key
 
-      - name: ✅流水线执行完毕
-        run: echo "🍏流水线执行完毕 ${{ job.status }}."
+      # - name: ✅流水线执行完毕
+      #   run: echo "🍏流水线执行完毕 ${{ job.status }}."
