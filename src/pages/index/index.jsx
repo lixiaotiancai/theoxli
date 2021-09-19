@@ -38,7 +38,7 @@ function Index() {
           </div>
           <div id="intro-text">
             <h1 href="#">theo的小窝</h1>
-            <h4>coming soon...</h4>
+            <h4>coming soon～</h4>
           </div>
           <div id="switch" className="switch" onClick={onClick}>
             <div id="circle" className="circle"></div>
